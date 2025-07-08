@@ -1,21 +1,20 @@
-FROM python:3.9.10-slim
+FROM python:3.11-slim
 
-ENV PYTHONUNBUFFERED 1
-
-EXPOSE 8000
 WORKDIR /app
 
+# Install build tools
+RUN apt-get update && apt-get install -y \
+    gcc \
+    libffi-dev \
+    libssl-dev \
+    build-essential \
+    && rm -rf /var/lib/apt/lists/*
 
-RUN apt-get update && \
-    apt-get install -y --no-install-recommends netcat && \
-    rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+COPY . /app
 
-COPY poetry.lock pyproject.toml ./
-RUN pip install poetry==1.1 && \
-    poetry config virtualenvs.in-project true && \
-    poetry install --no-dev
+RUN pip install --upgrade pip && \
+    pip install -r requirements.txt
 
-COPY . ./
+ENV PYTHONPATH=/app
 
-CMD poetry run alembic upgrade head && \
-    poetry run uvicorn --host=0.0.0.0 app.main:app
+CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000"]
