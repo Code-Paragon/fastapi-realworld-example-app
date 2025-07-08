@@ -2,7 +2,7 @@ name: Docker CI/CD
 
 on:
   push:
-    branches: [main]
+    branches: [master]
 
 jobs:
   build-and-push:
@@ -18,5 +18,5 @@ jobs:
       - name: Build Docker image
         run: docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/fastapi-app:latest .
 
-      - name: Push image to Docker Hub
+      - name: Push Docker image
         run: docker push ${{ secrets.DOCKERHUB_USERNAME }}/fastapi-app:latest
