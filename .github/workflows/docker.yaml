@@ -17,8 +17,8 @@ jobs:
 
       - name: Build Docker image
         run: |
-          docker build -t retr0009/wordpress-site:fastapi .  # <--- use existing repo
+          docker build -t retr0009/demo-app:fastapi .  # <--- use existing repo
 
       - name: Push Docker image
         run: |
-          docker push retr0009/wordpress-site:fastapi
+          docker push retr0009/demo-app:fastapi
